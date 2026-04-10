@@ -36,12 +36,15 @@
 // on the first frame of a new screen. Revisit when we find a clean
 // way to defer the event or buffer the count.
 void a11y_focus(FSTR_P label);
+void a11y_focus(const char *label);
 
 // Emit when the user clicks/selects a menu item.
 void a11y_activate(FSTR_P label);
+void a11y_activate(const char *label);
 
 // Emit when navigating into a submenu. label = the submenu name.
 void a11y_screen_enter(FSTR_P label);
+void a11y_screen_enter(const char *label);
 
 // Emit when navigating back out of a submenu.
 void a11y_screen_exit();
@@ -50,6 +53,7 @@ void a11y_screen_exit();
 // label: the setting name (e.g. "Fan Speed")
 // value: the formatted value string (e.g. "100%")
 void a11y_value_change(FSTR_P label, const char *value);
+void a11y_value_change(const char *label, const char *value);
 
 // Emit for status bar messages and alerts.
 // level: 0 = info/status, >0 = alert (higher = more urgent)

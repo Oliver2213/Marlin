@@ -304,17 +304,17 @@ int8_t hmiGet(bool draw) {
   if (change) {
     drawItemEdit(true);
     #if HAS_ACCESSIBILITY
-      // Emit value change with the current menu item's caption and numeric value.
-      // The formatted display string isn't easily available here, so we send the
-      // raw integer (scaled for floats by 10^dp).
       if (currentMenu) {
-        const char *label = a11y_item_caption(currentMenu->selectedItem());
-        char valstr[16];
-        if (menuData.dp > 0)
-          sprintf_P(valstr, PSTR("%.*f"), menuData.dp, menuData.value / POW(10, menuData.dp));
-        else
-          sprintf_P(valstr, PSTR("%ld"), (long)menuData.value);
-        a11y_value_change(FPSTR(label), valstr);
+        CustomMenuItem *item = currentMenu->selectedItem();
+        if (item) {
+          const char *label = a11y_item_caption(item);
+          char valstr[16];
+          if (menuData.dp > 0)
+            dtostrf(menuData.value / POW(10, menuData.dp), 1, menuData.dp, valstr);
+          else
+            snprintf_P(valstr, sizeof(valstr), PSTR("%ld"), (long)menuData.value);
+          a11y_value_change(label, valstr);
+        }
       }
     #endif
   }
@@ -396,14 +396,14 @@ void Menu::onScroll(bool dir) {
       menuItems[sel]->draw(0);
     }
     selected = sel;
-    TERN_(HAS_ACCESSIBILITY, a11y_focus(FPSTR(a11y_item_caption(menuItems[sel]))));
+    TERN_(HAS_ACCESSIBILITY, a11y_focus(a11y_item_caption(menuItems[sel])));
     drawMenuCursor(line());
     dwinUpdateLCD();
   }
 }
 
 void Menu::onClick() {
-  TERN_(HAS_ACCESSIBILITY, a11y_activate(FPSTR(a11y_item_caption(menuItems[selected]))));
+  TERN_(HAS_ACCESSIBILITY, a11y_activate(a11y_item_caption(menuItems[selected])));
   if (menuItems[selected]->onClick != nullptr) (*menuItems[selected]->onClick)();
 }
 
@@ -570,7 +570,7 @@ void updateMenu(Menu* &menu) {
   if (currentMenu != menu) {
     previousMenu = currentMenu;
     currentMenu = menu;
-    TERN_(HAS_ACCESSIBILITY, a11y_screen_enter(FPSTR(menu->menuTitle.caption)));
+    TERN_(HAS_ACCESSIBILITY, a11y_screen_enter(menu->menuTitle.caption));
   }
   menu->draw();
 }

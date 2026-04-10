@@ -41,53 +41,94 @@
 #include "a11y_serial.h"
 #include "../../core/serial.h"
 
-// Helper: print the //action:a11y prefix and event name
+// Helper: print the //action:a11y prefix and event name.
+// Does NOT call PORT_REDIRECT -- callers own the redirect scope
+// so the RAII restorer covers the entire message.
 static void a11y_serial_begin(FSTR_P event) {
-  PORT_REDIRECT(SerialMask::All);
   SERIAL_ECHOPGM("//action:a11y ");
   SERIAL_ECHO(event);
 }
 
-// Helper: print a quoted FSTR label
-static void a11y_serial_quote_f(FSTR_P label) {
+void a11y_serial_focus(FSTR_P label) {
+  PORT_REDIRECT(SerialMask::All);
+  a11y_serial_begin(F("focus"));
   SERIAL_CHAR(' ', '"');
   SERIAL_ECHO(label);
   SERIAL_CHAR('"');
+  SERIAL_EOL();
 }
-
-void a11y_serial_focus(FSTR_P label) {
+void a11y_serial_focus(const char *label) {
+  PORT_REDIRECT(SerialMask::All);
   a11y_serial_begin(F("focus"));
-  a11y_serial_quote_f(label);
+  SERIAL_CHAR(' ', '"');
+  SERIAL_ECHO(label);
+  SERIAL_CHAR('"');
   SERIAL_EOL();
 }
 
 void a11y_serial_activate(FSTR_P label) {
+  PORT_REDIRECT(SerialMask::All);
   a11y_serial_begin(F("activate"));
-  a11y_serial_quote_f(label);
+  SERIAL_CHAR(' ', '"');
+  SERIAL_ECHO(label);
+  SERIAL_CHAR('"');
+  SERIAL_EOL();
+}
+void a11y_serial_activate(const char *label) {
+  PORT_REDIRECT(SerialMask::All);
+  a11y_serial_begin(F("activate"));
+  SERIAL_CHAR(' ', '"');
+  SERIAL_ECHO(label);
+  SERIAL_CHAR('"');
   SERIAL_EOL();
 }
 
 void a11y_serial_screen_enter(FSTR_P label) {
+  PORT_REDIRECT(SerialMask::All);
   a11y_serial_begin(F("screen_enter"));
-  a11y_serial_quote_f(label);
+  SERIAL_CHAR(' ', '"');
+  SERIAL_ECHO(label);
+  SERIAL_CHAR('"');
+  SERIAL_EOL();
+}
+void a11y_serial_screen_enter(const char *label) {
+  PORT_REDIRECT(SerialMask::All);
+  a11y_serial_begin(F("screen_enter"));
+  SERIAL_CHAR(' ', '"');
+  SERIAL_ECHO(label);
+  SERIAL_CHAR('"');
   SERIAL_EOL();
 }
 
 void a11y_serial_screen_exit() {
+  PORT_REDIRECT(SerialMask::All);
   a11y_serial_begin(F("screen_exit"));
   SERIAL_EOL();
 }
 
 void a11y_serial_value_change(FSTR_P label, const char *value) {
+  PORT_REDIRECT(SerialMask::All);
   a11y_serial_begin(F("value"));
-  a11y_serial_quote_f(label);
   SERIAL_CHAR(' ', '"');
+  SERIAL_ECHO(label);
+  SERIAL_CHAR('"', ' ', '"');
+  SERIAL_ECHO(value);
+  SERIAL_CHAR('"');
+  SERIAL_EOL();
+}
+void a11y_serial_value_change(const char *label, const char *value) {
+  PORT_REDIRECT(SerialMask::All);
+  a11y_serial_begin(F("value"));
+  SERIAL_CHAR(' ', '"');
+  SERIAL_ECHO(label);
+  SERIAL_CHAR('"', ' ', '"');
   SERIAL_ECHO(value);
   SERIAL_CHAR('"');
   SERIAL_EOL();
 }
 
 void a11y_serial_status(const char *message, uint8_t level) {
+  PORT_REDIRECT(SerialMask::All);
   a11y_serial_begin(level > 0 ? F("alert") : F("status"));
   SERIAL_CHAR(' ', '"');
   SERIAL_ECHO(message);

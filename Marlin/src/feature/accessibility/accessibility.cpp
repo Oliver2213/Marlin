@@ -55,13 +55,28 @@ void a11y_focus(FSTR_P label) {
   TERN_(HAS_A11Y_EARCONS, a11y_earcon_focus());
   a11y_focus_changed = false;
 }
+void a11y_focus(const char *label) {
+  TERN_(HAS_A11Y_SERIAL, a11y_serial_focus(label));
+  TERN_(HAS_A11Y_EARCONS, a11y_earcon_focus());
+  a11y_focus_changed = false;
+}
 
 void a11y_activate(FSTR_P label) {
   TERN_(HAS_A11Y_SERIAL, a11y_serial_activate(label));
   TERN_(HAS_A11Y_EARCONS, a11y_earcon_activate());
 }
+void a11y_activate(const char *label) {
+  TERN_(HAS_A11Y_SERIAL, a11y_serial_activate(label));
+  TERN_(HAS_A11Y_EARCONS, a11y_earcon_activate());
+}
 
 void a11y_screen_enter(FSTR_P label) {
+  a11y_last_encoderLine = -1;
+  a11y_focus_changed = false;
+  TERN_(HAS_A11Y_SERIAL, a11y_serial_screen_enter(label));
+  TERN_(HAS_A11Y_EARCONS, a11y_earcon_screen_enter());
+}
+void a11y_screen_enter(const char *label) {
   a11y_last_encoderLine = -1;
   a11y_focus_changed = false;
   TERN_(HAS_A11Y_SERIAL, a11y_serial_screen_enter(label));
@@ -78,6 +93,9 @@ void a11y_screen_exit() {
 void a11y_value_change(FSTR_P label, const char *value) {
   TERN_(HAS_A11Y_SERIAL, a11y_serial_value_change(label, value));
   // No earcon for value changes -- the encoder tick from focus is enough
+}
+void a11y_value_change(const char *label, const char *value) {
+  TERN_(HAS_A11Y_SERIAL, a11y_serial_value_change(label, value));
 }
 
 void a11y_status(const char *message, uint8_t level) {

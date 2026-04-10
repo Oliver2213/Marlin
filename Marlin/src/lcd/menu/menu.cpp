@@ -126,6 +126,7 @@ void MenuEditItemBase::edit_screen(strfunc_t strfunc, loadfunc_t loadfunc) {
     #if HAS_ACCESSIBILITY
       // Emit value-change event when encoder position changes during editing
       static int32_t a11y_last_edit_pos = -1;
+      if (ui.screen_changed) a11y_last_edit_pos = -1;
       if (int32_t(ui.encoderPosition) != a11y_last_edit_pos && ui.first_page) {
         a11y_last_edit_pos = ui.encoderPosition;
         a11y_value_change(editLabel, val);
