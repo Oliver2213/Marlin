@@ -36,6 +36,10 @@
 #include "../../marlinui.h"
 #include "../../../HAL/shared/Delay.h"
 
+#if HAS_ACCESSIBILITY
+  #include "../../../feature/accessibility/accessibility.h"
+#endif
+
 #if HAS_SOUND
   #include "../../../libs/buzzer.h"
 #endif
@@ -70,7 +74,11 @@ EncoderState encoderReceiveAnalyze() {
       }
       const bool was_waiting = marlin.wait_for_user;
       marlin.user_resume();
-      return was_waiting ? ENCODER_DIFF_NO : ENCODER_DIFF_ENTER;
+      if (!was_waiting) {
+        TERN_(HAS_ACCESSIBILITY, a11y_notify_click());
+        return ENCODER_DIFF_ENTER;
+      }
+      return ENCODER_DIFF_NO;
     }
     else return ENCODER_DIFF_NO;
   }

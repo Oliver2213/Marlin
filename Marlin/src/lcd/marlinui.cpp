@@ -1008,6 +1008,7 @@ void MarlinUI::init() {
         lcd_clicked = !marlin.wait_for_user && !display_is_asleep();
         marlin.user_resume();
         quick_feedback();
+        TERN_(HAS_ACCESSIBILITY, a11y_notify_click());
       };
 
       #if HAS_TOUCH_BUTTONS

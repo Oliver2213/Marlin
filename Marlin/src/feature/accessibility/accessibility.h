@@ -29,6 +29,16 @@
 
 #if ENABLED(ACCESSIBILITY)
 
+// Runtime toggle -- accessibility is compiled in but events are
+// suppressed until enabled.  Toggled by multi-click gesture.
+extern bool a11y_enabled;
+
+// Call from every click/enter path.  Tracks rapid consecutive clicks
+// and toggles a11y_enabled when the configured count is reached within
+// the configured window.  Safe to call unconditionally (no-ops when
+// ACCESSIBILITY is disabled at compile time).
+void a11y_notify_click();
+
 // Emit when the user scrolls to a new menu item.
 // label: the display string of the focused item
 // NOTE: Position-in-list (e.g. "item 3 of 12") is not yet supported.

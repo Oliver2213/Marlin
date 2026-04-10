@@ -2792,6 +2792,8 @@
   #define ACCESSIBILITY_SERIAL                   // Emit //action:a11y events over serial for host-side TTS
   #define ACCESSIBILITY_EARCONS                  // Play earcon tones on buzzer for menu navigation feedback
   //#define ACCESSIBILITY_TOUCH_HIGHLIGHT_ONLY   // Touch only highlights, encoder button required to activate.
+  #define A11Y_TOGGLE_CLICKS         3           // Number of rapid encoder clicks to toggle accessibility on/off
+  #define A11Y_TOGGLE_CLICK_WINDOW_MS 175        // Max milliseconds between clicks for the toggle gesture
                                                  // Prevents accidental taps for users who rely on encoder
                                                  // navigation. WARNING: changes touchscreen behavior for
                                                  // all users.
