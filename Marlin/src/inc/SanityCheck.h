@@ -2965,8 +2965,8 @@ static_assert(NUM_SERVOS <= NUM_SERVO_PLUGS, "NUM_SERVOS (or some servo index) i
   #if ENABLED(ACCESSIBILITY_EARCONS) && !HAS_SOUND
     #error "ACCESSIBILITY_EARCONS requires a BEEPER_PIN or USE_MARLINUI_BUZZER."
   #endif
-  #if !HAS_MARLINUI_MENU
-    #error "ACCESSIBILITY requires a menu-based LCD interface (HAS_MARLINUI_MENU)."
+  #if !HAS_MARLINUI_MENU && !HAS_DWIN_E3V2
+    #error "ACCESSIBILITY requires a menu-based LCD interface (HAS_MARLINUI_MENU or HAS_DWIN_E3V2)."
   #endif
 #endif
 

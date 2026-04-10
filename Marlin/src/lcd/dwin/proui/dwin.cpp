@@ -39,6 +39,9 @@
 #include "../../utf8.h"
 #include "../../marlinui.h"
 #include "../../extui/ui_api.h"
+#if HAS_ACCESSIBILITY
+  #include "../../../feature/accessibility/accessibility.h"
+#endif
 #include "../../../module/temperature.h"
 #include "../../../module/printcounter.h"
 #include "../../../module/motion.h"
@@ -1533,6 +1536,7 @@ void hmiSaveProcessID(const uint8_t id) {
 }
 
 void hmiReturnScreen() {
+  TERN_(HAS_ACCESSIBILITY, a11y_screen_exit());
   checkkey = last_checkkey;
   marlin.user_resume();
   drawMainArea();
