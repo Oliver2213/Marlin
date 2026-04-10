@@ -31,6 +31,7 @@
  * - Printer geometry
  * - Endstop configuration
  * - LCD controller
+ * - Accessibility
  * - Extra features
  *
  * Advanced settings can be found in Configuration_adv.h
@@ -2776,6 +2777,25 @@
  * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek (Greece)', 'el_CY':'Greek (Cyprus)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hg':'Hinglish (Hindi-Latin)', 'hr':'Croatian', 'hu':'Hungarian', 'id':'Indonesian', 'it':'Italian', 'jp_kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt_br':'Portuguese (Brazilian)', 'ro':'Romanian', 'ru':'Russian', 'sk':'Slovak', 'sv':'Swedish', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)' }
  */
 #define LCD_LANGUAGE en
+
+/**
+ * ACCESSIBILITY
+ *
+ * Enable audio and serial events for blind/low-vision users.
+ * The accessibility system emits structured events as users navigate
+ * menus, edit values, and receive alerts. Backends provide audio
+ * feedback via buzzer tones (earcons) and serial output for
+ * host-side text-to-speech.
+ */
+//#define ACCESSIBILITY                          // Enable accessibility event system
+#if ENABLED(ACCESSIBILITY)
+  #define ACCESSIBILITY_SERIAL                   // Emit //action:a11y events over serial for host-side TTS
+  #define ACCESSIBILITY_EARCONS                  // Play earcon tones on buzzer for menu navigation feedback
+  //#define ACCESSIBILITY_TOUCH_HIGHLIGHT_ONLY   // Touch only highlights, encoder button required to activate.
+                                                 // Prevents accidental taps for users who rely on encoder
+                                                 // navigation. WARNING: changes touchscreen behavior for
+                                                 // all users.
+#endif
 
 /**
  * LCD Character Set

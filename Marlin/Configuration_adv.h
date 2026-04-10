@@ -1691,11 +1691,7 @@
   //#define SOUND_MENU_ITEM   // Add a mute option to the LCD menu
   #define SOUND_ON_DEFAULT    // Buzzer/speaker default enabled state
 
-  //#define ACCESSIBILITY                  // Enable accessibility features for blind/low-vision users
-  #if ENABLED(ACCESSIBILITY)
-    #define ACCESSIBILITY_SERIAL           // Emit //action:a11y events over serial for host-side TTS
-    #define ACCESSIBILITY_EARCONS          // Play earcon tones on buzzer for menu navigation feedback
-  #endif
+  // Accessibility settings have moved to Configuration.h
 
   #if ENABLED(U8GLIB_SSD1309)
     //#define LCD_DOUBLE_BUFFER           // Optimize display updates. Costs ~1K of SRAM.

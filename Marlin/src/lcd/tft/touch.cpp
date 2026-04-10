@@ -190,10 +190,20 @@ void Touch::touch(touch_control_t * const control) {
     // Move encoder to a menu item and simulate a click.
     // Highlighted menu items have this type to indicate a touch will activate it.
     case MENU_CLICK:
-      TERN_(SINGLE_TOUCH_NAVIGATION, ui.encoderPosition = control->data);
-      // Effectively ignore the touch until it is released
-      time_to_hold = next_touch_ms + 2000;
-      // fall thru
+      #if ENABLED(ACCESSIBILITY_TOUCH_HIGHLIGHT_ONLY)
+        // Touch highlights the item but does not activate it.
+        // The encoder button must be used to confirm selection.
+        // This prevents accidental activation for blind users who
+        // cannot see what they are tapping.
+        ui.encoderPosition = control->data;
+        ui.refresh();
+        break;
+      #else
+        TERN_(SINGLE_TOUCH_NAVIGATION, ui.encoderPosition = control->data);
+        // Effectively ignore the touch until it is released
+        time_to_hold = next_touch_ms + 2000;
+        // fall thru
+      #endif
 
     // Tap to Continue. e.g., Anywhere on the whole screen.
     case CLICK: ui.lcd_clicked = true; break;
