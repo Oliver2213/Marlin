@@ -1040,6 +1040,10 @@ void GcodeSuite::process_parsed_command(bool no_ok/*=false*/) {
         case 871: M871(); break;                                  // M871: Print/reset/clear first layer temperature offset values
       #endif
 
+      #if HAS_ACCESSIBILITY
+        case 888: M888(); break;                                  // M888: Toggle / set accessibility mode
+      #endif
+
       #if HAS_LIN_ADVANCE_K
         case 900: M900(); break;                                  // M900: Set advance K factor.
       #endif
