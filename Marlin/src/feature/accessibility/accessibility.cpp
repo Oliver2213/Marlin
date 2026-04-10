@@ -75,6 +75,11 @@ void a11y_screen_exit() {
   TERN_(HAS_A11Y_EARCONS, a11y_earcon_screen_exit());
 }
 
+void a11y_value_change(FSTR_P label, const char *value) {
+  TERN_(HAS_A11Y_SERIAL, a11y_serial_value_change(label, value));
+  // No earcon for value changes -- the encoder tick from focus is enough
+}
+
 void a11y_status(const char *message, uint8_t level) {
   TERN_(HAS_A11Y_SERIAL, a11y_serial_status(message, level));
   if (level > 0) {

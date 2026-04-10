@@ -119,8 +119,18 @@ void MenuEditItemBase::edit_screen(strfunc_t strfunc, loadfunc_t loadfunc) {
   // Constrain ui.encoderPosition to 0 ... maxEditValue (calculated in encoder steps)
   ui.encoderPosition = constrain(int32_t(ui.encoderPosition), 0, maxEditValue);
   // If drawing is flagged then redraw the (whole) edit screen
-  if (ui.should_draw())
-    draw_edit_screen(strfunc(ui.encoderPosition + minEditValue));
+  if (ui.should_draw()) {
+    const char * const val = strfunc(ui.encoderPosition + minEditValue);
+    draw_edit_screen(val);
+    #if HAS_ACCESSIBILITY
+      // Emit value-change event when encoder position changes during editing
+      static int32_t a11y_last_edit_pos = -1;
+      if (int32_t(ui.encoderPosition) != a11y_last_edit_pos && ui.first_page) {
+        a11y_last_edit_pos = ui.encoderPosition;
+        a11y_value_change(editLabel, val);
+      }
+    #endif
+  }
   // If there was a click or "live editing" and encoder moved...
   if (ui.lcd_clicked || (liveEdit && ui.should_draw())) {
     // Pass the editValue pointer to the loadfunc along with the encoder plus min

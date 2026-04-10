@@ -29,6 +29,7 @@
  *   //action:a11y activate "Label"
  *   //action:a11y screen_enter "Label"
  *   //action:a11y screen_exit
+ *   //action:a11y value "Fan Speed" "100%"
  *   //action:a11y alert "Message"
  *   //action:a11y status "Message"
  */
@@ -74,6 +75,15 @@ void a11y_serial_screen_enter(FSTR_P label) {
 
 void a11y_serial_screen_exit() {
   a11y_serial_begin(F("screen_exit"));
+  SERIAL_EOL();
+}
+
+void a11y_serial_value_change(FSTR_P label, const char *value) {
+  a11y_serial_begin(F("value"));
+  a11y_serial_quote_f(label);
+  SERIAL_CHAR(' ', '"');
+  SERIAL_ECHO(value);
+  SERIAL_CHAR('"');
   SERIAL_EOL();
 }
 

@@ -46,6 +46,11 @@ void a11y_screen_enter(FSTR_P label);
 // Emit when navigating back out of a submenu.
 void a11y_screen_exit();
 
+// Emit when a value changes during editing (encoder turn on edit screen).
+// label: the setting name (e.g. "Fan Speed")
+// value: the formatted value string (e.g. "100%")
+void a11y_value_change(FSTR_P label, const char *value);
+
 // Emit for status bar messages and alerts.
 // level: 0 = info/status, >0 = alert (higher = more urgent)
 void a11y_status(const char *message, uint8_t level=0);

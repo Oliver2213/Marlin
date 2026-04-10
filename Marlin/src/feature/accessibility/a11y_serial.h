@@ -30,4 +30,5 @@ void a11y_serial_focus(FSTR_P label);
 void a11y_serial_activate(FSTR_P label);
 void a11y_serial_screen_enter(FSTR_P label);
 void a11y_serial_screen_exit();
+void a11y_serial_value_change(FSTR_P label, const char *value);
 void a11y_serial_status(const char *message, uint8_t level);
