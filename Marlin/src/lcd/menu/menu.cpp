@@ -283,6 +283,7 @@ void scroll_screen(const uint8_t limit, const bool is_menu) {
   if (int32_t(ui.encoderPosition) < 0) ui.encoderPosition = 0;
   if (ui.first_page) {
     encoderLine = ui.encoderPosition / (ENCODER_STEPS_PER_MENU_ITEM);
+    TERN_(HAS_ACCESSIBILITY, a11y_check_focus_change(encoderLine));
     ui.screen_changed = false;
   }
   if (screen_items > 0 && encoderLine >= screen_items - limit) {

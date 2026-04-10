@@ -32,6 +32,10 @@
   #include "../feature/host_actions.h"
 #endif
 
+#if HAS_ACCESSIBILITY
+  #include "../feature/accessibility/accessibility.h"
+#endif
+
 #if ALL(BROWSE_MEDIA_ON_INSERT, PASSWORD_ON_SD_PRINT_MENU)
   #include "../feature/password/password.h"
 #endif
@@ -1677,6 +1681,8 @@ uint8_t expand_u8str_P(char * const outstr, PGM_P const ptpl, const int8_t ind, 
     MString<30> msg;
     pgm ? msg.set_P(ustr) : msg.set(ustr);
     status_message.set(&msg).utrunc(MAX_MESSAGE_SIZE);
+
+    TERN_(HAS_ACCESSIBILITY, a11y_status(status_message, level));
 
     finish_status(level > 0); // Persist if the status has a level
   }

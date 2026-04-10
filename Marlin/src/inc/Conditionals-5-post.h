@@ -3494,6 +3494,17 @@
   #undef SOUND_ON_DEFAULT
 #endif
 
+// Accessibility features
+#if ENABLED(ACCESSIBILITY)
+  #define HAS_ACCESSIBILITY 1
+  #if ALL(ACCESSIBILITY_SERIAL, HOST_ACTION_COMMANDS)
+    #define HAS_A11Y_SERIAL 1
+  #endif
+  #if ALL(ACCESSIBILITY_EARCONS, HAS_SOUND)
+    #define HAS_A11Y_EARCONS 1
+  #endif
+#endif
+
 // Define a starting height for measuring manual probe points
 #ifndef MANUAL_PROBE_START_Z
   #if ANY(MESH_BED_LEVELING, PROBE_MANUALLY)

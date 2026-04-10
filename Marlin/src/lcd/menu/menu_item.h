@@ -28,6 +28,10 @@
 
 #include "../../inc/MarlinConfigPre.h"
 
+#if HAS_ACCESSIBILITY
+  #include "../../feature/accessibility/accessibility.h"
+#endif
+
 #if ENABLED(LASER_SYNCHRONOUS_M106_M107)
   #include "../../module/planner.h"
 #endif
@@ -42,7 +46,11 @@ class MenuItem_submenu : public MenuItemBase {
     FORCE_INLINE static void draw(const bool sel, const uint8_t row, FSTR_P const fstr, ...) {
       _draw(sel, row, fstr, '>', LCD_STR_ARROW_RIGHT[0]);
     }
-    static void action(FSTR_P const, const screenFunc_t func) { ui.push_current_screen(); ui.goto_screen(func); }
+    static void action(FSTR_P const fstr, const screenFunc_t func) {
+      TERN_(HAS_ACCESSIBILITY, a11y_screen_enter(fstr));
+      ui.push_current_screen();
+      ui.goto_screen(func);
+    }
 };
 
 // Any menu item that invokes an immediate action
@@ -309,9 +317,14 @@ class MenuItem_bool : public MenuEditItemBase {
     _MENU_ITEM_MULTIPLIER_CHECK(USE_MULTIPLIER);               \
     if (ui.screen_changed) return;                             \
   }                                                            \
-  if (ui.should_draw())                                        \
+  if (ui.should_draw()) {                                      \
+    TERN_(HAS_ACCESSIBILITY,                                   \
+      if (HIGHLIGHTED() && a11y_focus_changed && ui.first_page)\
+        a11y_focus(flabel);                                    \
+    );                                                         \
     MenuItem_##TYPE::draw                                      \
       (HIGHLIGHTED(), _lcdLineNr, flabel, ##V);                \
+  }                                                            \
 }while(0)
 
 // Item with optional data

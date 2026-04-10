@@ -2956,6 +2956,21 @@ static_assert(NUM_SERVOS <= NUM_SERVO_PLUGS, "NUM_SERVOS (or some servo index) i
 #endif
 
 /**
+ * Accessibility feature requirements
+ */
+#if ENABLED(ACCESSIBILITY)
+  #if ENABLED(ACCESSIBILITY_SERIAL) && DISABLED(HOST_ACTION_COMMANDS)
+    #error "ACCESSIBILITY_SERIAL requires HOST_ACTION_COMMANDS."
+  #endif
+  #if ENABLED(ACCESSIBILITY_EARCONS) && !HAS_SOUND
+    #error "ACCESSIBILITY_EARCONS requires a BEEPER_PIN or USE_MARLINUI_BUZZER."
+  #endif
+  #if !HAS_MARLINUI_MENU
+    #error "ACCESSIBILITY requires a menu-based LCD interface (HAS_MARLINUI_MENU)."
+  #endif
+#endif
+
+/**
  * Some boards forbid the use of -1 Native USB
  */
 #if ENABLED(BOARD_NO_NATIVE_USB)

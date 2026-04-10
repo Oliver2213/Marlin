@@ -27,6 +27,10 @@
 
 #include "limits.h"
 
+#if HAS_ACCESSIBILITY
+  #include "../../feature/accessibility/accessibility.h"
+#endif
+
 extern int8_t encoderLine, encoderTopLine, screen_items;
 
 void scroll_screen(const uint8_t limit, const bool is_menu);
@@ -86,7 +90,10 @@ class MenuItem_back : public MenuItemBase {
       _draw(sel, row, ftpl, LCD_STR_UPLEVEL[0], LCD_STR_UPLEVEL[0]);
     }
     // Back Item action goes back one step in history
-    FORCE_INLINE static void action(FSTR_P const=nullptr) { ui.go_back(); }
+    FORCE_INLINE static void action(FSTR_P const=nullptr) {
+      TERN_(HAS_ACCESSIBILITY, a11y_screen_exit());
+      ui.go_back();
+    }
 };
 
 // CONFIRM_ITEM(LABEL,Y,N,FY,FN,...),
